@@ -1,5 +1,6 @@
-#folder idea
+#idea's folder
 .idea/*
+bin/*
 
 # Compiled class file
 *.class
