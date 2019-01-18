@@ -1,9 +1,8 @@
 package model;
 
-import model.tetrominos.Tetromino;
-import model.tetrominos.TetrominoFactory;
+import model.tetromino.Tetromino;
+import model.tetromino.TetrominoFactory;
 import utilities.DeepCloner;
-
 import java.awt.Color;
 
 /**
@@ -11,8 +10,8 @@ import java.awt.Color;
  * Tetris grid class which is the main model for MVC.
  */
 public class TetrisGrid {
-    public static final int STANDARD_X_SIZE = 10;
-    public static final int STANDARD_Y_SIZE = 20;
+    public static final int STANDARD_WIDTH= 10;
+    public static final int STANDARD_HEIGHT= 20;
     private int width;
     private int height;
     private Color[][] grid;
@@ -29,16 +28,15 @@ public class TetrisGrid {
     public TetrisGrid(int width, int height) {
         this.width = width;
         this.height = height;
-        this.tetrominoFactory = new TetrominoFactory(width, height);
+        this.tetrominoFactory = new TetrominoFactory(width);
         this.grid = new Color[height][width];
-//        this.tetromino = tetrominoFactory.getNextTetromino();
     }
 
     /**
      * Standard constructor, initializes the TetrisGrid with standard sizes.
      */
     public TetrisGrid() {
-        this(STANDARD_X_SIZE, STANDARD_Y_SIZE);
+        this(STANDARD_WIDTH, STANDARD_HEIGHT);
     }
 
     /**
@@ -139,10 +137,9 @@ public class TetrisGrid {
         if (hasTetromino()) {
             boolean movedDown;
             do {
-                movedDown = tetromino.moveDown(grid);
+                movedDown = this.moveTetrominoDown();
             } while (movedDown);
-            this.tetromino.placeSelf(this.grid);
-            this.tetromino = null;
+            this.placeTetromino();
         }
     }
 
@@ -185,7 +182,7 @@ public class TetrisGrid {
     /**
      * Method to check if the given row on the grid is filled.
      * @param row grid's row index to check
-     * @return true if given row is fille, false otherwise
+     * @return true if given row is filled, false otherwise
      */
     private boolean isFilledRow(int row) {
         boolean filled = true;

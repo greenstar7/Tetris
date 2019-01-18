@@ -20,7 +20,7 @@ public class TetrisGame implements  Runnable{
     }
 
     private void initMVC() {
-        view = new TetrisView(width, height, TetrisGrid.STANDARD_X_SIZE, TetrisGrid.STANDARD_Y_SIZE);
+        view = new TetrisView(width, height, TetrisGrid.STANDARD_WIDTH, TetrisGrid.STANDARD_HEIGHT);
         model = new TetrisGrid();
         controller = new TetrisEngine(model, view);
     }
@@ -39,6 +39,6 @@ public class TetrisGame implements  Runnable{
     }
 
     public static void main(String[] argv) {
-        SwingUtilities.invokeLater(new TetrisGame(200, 400));
+        SwingUtilities.invokeLater(new TetrisGame(300, 600));
     }
 }

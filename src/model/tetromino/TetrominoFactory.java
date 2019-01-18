@@ -1,4 +1,4 @@
-package model.tetrominos;
+package model.tetromino;
 
 import java.awt.Color;
 import java.util.Random;
@@ -9,8 +9,8 @@ import java.util.Random;
  */
 public class TetrominoFactory {
     private Random rand;
-    private int width;
-    private int height;
+    private int startX;
+    private int startY;
     public static final Color[] tetrominoColors;
 
     static {
@@ -20,10 +20,10 @@ public class TetrominoFactory {
         };
     }
 
-    public TetrominoFactory(int width, int height) {
+    public TetrominoFactory(int width) {
         this.rand = new Random();
-        this.width = width;
-        this.height = height;
+        this.startX = (int) Math.ceil(width/2.0);
+        this.startY = 0;
     }
 
     /**
@@ -34,19 +34,19 @@ public class TetrominoFactory {
         int i = this.rand.nextInt(7);
         switch (i) {
             case 0:
-                return new OTetromino(width, height, tetrominoColors[i]);
+                return new O(startX, startY, tetrominoColors[i]);
             case 1:
-                return new ITetromino(width, height, tetrominoColors[i]);
+                return new I(startX, startY, tetrominoColors[i]);
             case 2:
-                return new STetromino(width, height, tetrominoColors[i]);
+                return new S(startX, startY, tetrominoColors[i]);
             case 3:
-                return new ZTetromino(width, height, tetrominoColors[i]);
+                return new Z(startX, startY, tetrominoColors[i]);
             case 4:
-                return new LTetromino(width, height, tetrominoColors[i]);
+                return new L(startX, startY, tetrominoColors[i]);
             case 5:
-                return new JTetromino(width, height, tetrominoColors[i]);
+                return new J(startX, startY, tetrominoColors[i]);
             case 6:
-                return new TTetromino(width, height, tetrominoColors[i]);
+                return new T(startX, startY, tetrominoColors[i]);
             default: return null;
         }
     }
