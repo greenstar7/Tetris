@@ -1,6 +1,7 @@
 .idea/**
 bin/**
 *.kotlin_module
+**/META-INF/**
 
 # Compiled class file
 *.class

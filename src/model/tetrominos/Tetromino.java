@@ -103,18 +103,6 @@ public abstract class Tetromino{
     }
 
     /**
-     * Function to move tetromino down as far as possible and place it on grid.
-     * @param grid Tetris game grid
-     */
-    public void dropSelf(Color[][] grid) {
-        boolean moved;
-        do {
-            moved = this.moveDown(grid);
-        } while (moved);
-//        placeSelf(grid);
-    }
-
-    /**
      * Writes down colors of the tetromino to the grid.
      * @param grid Tetris game grid
      */
