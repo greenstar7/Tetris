@@ -152,9 +152,16 @@ public class TetrisGrid {
      */
     public boolean spawnTetromino() {
         // getting next tetromino object
+        boolean spawned = false;
         this.tetromino = this.tetrominoFactory.getNextTetromino();
         // checking if we can actually spawn it and return the check result.
-        return this.tetromino.isValidPos(grid);
+        if (this.tetromino.isValidPos(grid)) {
+            spawned = true;
+        }
+        else {
+            this.tetromino = null;
+        }
+        return spawned;
     }
 
     /**
