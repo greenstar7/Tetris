@@ -3,7 +3,8 @@ package model;
 import model.tetromino.Tetromino;
 import model.tetromino.TetrominoFactory;
 import utilities.DeepCloner;
-import java.awt.Color;
+
+import java.awt.*;
 
 /**
  * @author Artemii Hrynevych
@@ -17,7 +18,7 @@ public class TetrisGrid {
     private Color[][] grid;
     private TetrominoFactory tetrominoFactory;
     private Tetromino tetromino;
-
+    private Tetromino nextTetromino;
     /**
      * Tetris grid constructor.
      * <p> Initializes size of the grid and fills Color grid with nulls.
@@ -29,6 +30,7 @@ public class TetrisGrid {
         this.width = width;
         this.height = height;
         this.tetrominoFactory = new TetrominoFactory(width);
+        this.nextTetromino = tetrominoFactory.getNextTetromino();
         this.grid = new Color[height][width];
     }
 
@@ -133,13 +135,17 @@ public class TetrisGrid {
     /**
      * Method to move tetromino as far down as possible and then place it.
      */
-    public void dropTetromino() {
+    public boolean dropTetromino() {
         if (hasTetromino()) {
             boolean movedDown;
             do {
                 movedDown = this.moveTetrominoDown();
             } while (movedDown);
             this.placeTetromino();
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -150,7 +156,8 @@ public class TetrisGrid {
     public boolean spawnTetromino() {
         // getting next tetromino object
         boolean spawned = false;
-        this.tetromino = this.tetrominoFactory.getNextTetromino();
+        this.tetromino = this.nextTetromino;
+        this.nextTetromino = this.tetrominoFactory.getNextTetromino();
         // checking if we can actually spawn it and return the check result.
         if (this.tetromino.isValidPos(grid)) {
             spawned = true;
@@ -163,13 +170,14 @@ public class TetrisGrid {
 
     /**
      * Method to remove filled rows and shift remaining ones.
-     * @return true if at least one row was filled
      */
-    public void handleAllFilledRows() {
+    public int handleAllFilledRows() {
+        int filled = 0;
         int row = height -1;
         int topRow = 0;
         while (row >= topRow) {
             if (isFilledRow(row)) {
+                filled = filled + 1;
                 shiftRows(row, topRow);
                 topRow = topRow + 1;
             }
@@ -177,6 +185,7 @@ public class TetrisGrid {
                 row = row - 1;
             }
         }
+        return filled;
     }
 
     /**
@@ -205,5 +214,13 @@ public class TetrisGrid {
             this.grid[row] = this.grid[row-1].clone();
         }
         this.grid[min] = new Color[this.width];
+    }
+
+    /**
+     * Method to get next tetromino as Color[4][4] array.
+     * @return Color[4][4] representation of the next tetromino.
+     */
+    public Color[][] getNextTetrominoGrid() {
+        return this.nextTetromino.asArray();
     }
 }

@@ -30,10 +30,27 @@ public abstract class Tetromino extends AbstractTetromino{
     public abstract void initPoints();
 
     /**
+     * Function to get tetromino representation as 4x4 array.
+     * @return Color[4][4] array
+     */
+    @Override
+    public Color[][] asArray() {
+        Color[][] array = new Color[4][4];
+        int y = 1;
+        int x = 2;
+        array[y][x] = color;
+        for (Point point: points) {
+            array[y+(int)point.getY()][x+(int)point.getX()] = color;
+        }
+        return array;
+    }
+
+    /**
      * Function to move tetromino to the left.
      * @param grid Tetris game grid
      * @return true if tetromino moved left, false otherwise
      */
+    @Override
     public boolean moveLeft(Color[][] grid) {
         boolean moved;
         int oldX = this.x;
@@ -53,6 +70,7 @@ public abstract class Tetromino extends AbstractTetromino{
      * @param grid Tetris game grid
      * @return true if tetromino moved right, false otherwise
      */
+    @Override
     public boolean moveRight(Color[][] grid) {
         boolean moved;
         int oldX = this.x;
@@ -72,6 +90,7 @@ public abstract class Tetromino extends AbstractTetromino{
      * @param grid Tetris game grid
      * @return true if tetromino moved down, false otherwise
      */
+    @Override
     public boolean moveDown(Color[][] grid) {
         int oldY = this.y;
         this.y = this.y + 1;
@@ -89,6 +108,7 @@ public abstract class Tetromino extends AbstractTetromino{
      * Writes down colors of the tetromino to the grid.
      * @param grid Tetris game grid
      */
+    @Override
     public void placeSelf(Color[][] grid) {
         grid[y][x] = color;
         for (Point point: points) {

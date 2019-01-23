@@ -11,12 +11,17 @@ public class TetrominoFactory {
     private Random rand;
     private int startX;
     private int startY;
-    public static final Color[] tetrominoColors;
+    private static final Color[] tetrominoColors;
 
     static {
         tetrominoColors = new Color[]{
-                Color.BLUE, Color.GREEN, Color.MAGENTA, Color.ORANGE,
-                Color.YELLOW, Color.PINK, Color.CYAN
+                Color.YELLOW, // O
+                Color.CYAN, // I
+                Color.GREEN, // S
+                Color.RED, // Z
+                Color.ORANGE, // L
+                Color.BLUE, // J
+                new Color(128, 0, 128) // T
         };
     }
 

@@ -2,8 +2,11 @@ import controller.TetrisEngine;
 import model.TetrisGrid;
 import view.TetrisView;
 import javax.swing.*;
-import java.awt.*;
 
+/**
+ * @author Artemii Hrynevych
+ * Main program to run tetris game.
+ */
 public class TetrisGame implements  Runnable{
     private TetrisEngine controller;
     private TetrisGrid model;
@@ -26,7 +29,6 @@ public class TetrisGame implements  Runnable{
     }
     private void initJFrame() {
         jFrame = new JFrame();
-        view.setPreferredSize(new Dimension(width+1, height+1));
         jFrame.add(view);
         jFrame.pack();
         jFrame.setTitle("Tetris");
@@ -39,6 +41,6 @@ public class TetrisGame implements  Runnable{
     }
 
     public static void main(String[] argv) {
-        SwingUtilities.invokeLater(new TetrisGame(300, 600));
+        SwingUtilities.invokeLater(new TetrisGame(500, 600));
     }
 }
