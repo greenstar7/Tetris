@@ -82,11 +82,16 @@ public class TetrisView extends JPanel {
         }
         else {
             drawGameGrid(g2d);
+            fillSidePanel(g2d);
             drawScorePanel(g2d);
             drawNextTetrominoPanel(g2d);
         }
     }
 
+    /**
+     * Function to draw the grid of the side panel with next tetromino.
+     * @param g2d
+     */
     private void drawNextTetrominoPanel(Graphics2D g2d) {
         g2d.setColor(new Color(255, 200, 0));
         g2d.drawString(
@@ -112,28 +117,41 @@ public class TetrisView extends JPanel {
         }
     }
 
-    private void drawScorePanel(Graphics2D g2d) {
-        // fill score panel background
+    /**
+     * Function to fill the side panel with color.
+     * @param g2d
+     */
+    private void fillSidePanel(Graphics2D g2d) {
         g2d.setPaint(new Color(0, 8, 52));
         g2d.fillRect(width-sideWidth, 0, sideWidth, height);
+    }
 
+    /**
+     * Function to draw the side panel score.
+     * @param g2d
+     */
+    private void drawScorePanel(Graphics2D g2d) {
         g2d.setColor(new Color(255, 233, 0));
         FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 
         g2d.drawString(
                 "SCORE:",
-                this.width - this.sideWidth + tileSize,
+                this.width - this.sideWidth + nextTetrominoTileSize,
                 metrics.getHeight()
         );
 
         String scoreString = Long.toString(this.score);
         g2d.drawString(
                 scoreString,
-                this.width - this.sideWidth + tileSize,
+                this.width - this.sideWidth + nextTetrominoTileSize,
                 metrics.getHeight() * 2
         );
     }
 
+    /**
+     * Function to draw tetris game grid.
+     * @param g2d
+     */
     private void drawGameGrid(Graphics2D g2d) {
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
@@ -149,6 +167,10 @@ public class TetrisView extends JPanel {
         }
     }
 
+    /**
+     * Function to draw GAME OVER sreen.
+     * @param g2d
+     */
     private void drawFinalScreen(Graphics2D g2d) {
         g2d.setColor(Color.BLACK);
         g2d.fill(this.getBounds());
@@ -181,35 +203,60 @@ public class TetrisView extends JPanel {
         );
     }
 
+    /**
+     * Updating state of the game grid.
+     * @param grid new game grid
+     */
     public void updateGrid(Color[][] grid) {
         this.grid = grid.clone();
         this.repaint();
     }
 
+    /**
+     * Updating state of the next tetromino grid.
+     * @param nextTetrominoGrid new new tetromino grid
+     */
     public void updateNextTetrominoGrid(Color[][] nextTetrominoGrid) {
         this.nextTetrominoGrid = nextTetrominoGrid.clone();
         this.repaint();
     }
 
+    /**
+     * Updating game score
+     * @param score updated game score
+     */
     public void updateScore(long score) {
         this.score = score;
     }
 
+    /**
+     * Function to receive signal from controller that game is over.
+     */
     public void gameOver() {
         gameOver = true;
         this.repaint();
     }
 
+    /**
+     * Setting the last user command for controller to read it.
+     * @param command
+     */
     private void setLastCommand(String command) {
         this.lastCommand = command;
     }
 
+    /**
+     * Function for controller to get the last user input.
+     */
     public String getLastCommand() {
         String command = this.lastCommand;
         this.resetLastCommand();
         return command;
     }
 
+    /**
+     * Clearing the last user input command.
+     */
     private void resetLastCommand() {
         this.lastCommand = "none";
     }
