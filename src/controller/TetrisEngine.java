@@ -2,7 +2,6 @@ package controller;
 
 import model.TetrisGrid;
 import view.TetrisView;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class TetrisEngine implements Runnable {
     private TetrisGrid model;
@@ -11,7 +10,6 @@ public class TetrisEngine implements Runnable {
     private long delta;
     private long score;
     private int freeFallIterations;
-    private ReentrantLock movementLock = new ReentrantLock();
 
     public TetrisEngine(TetrisGrid model, TetrisView view) {
         this.model = model;
@@ -42,25 +40,23 @@ public class TetrisEngine implements Runnable {
         long cycleStartTime = System.currentTimeMillis();
         while (gameContinues) {
             if ((System.currentTimeMillis() - cycleStartTime) >= delta) {
-                movementLock.lock();
-                try {
-                    if (this.model.hasTetromino()) {
-                        canMoveDown = this.model.moveTetrominoDown();
-                        if (!canMoveDown) {
-                            this.placeTetromino();
-                            this.model.handleAllFilledRows();
-                        } else {
-                            freeFallIterations += 1;
-                        }
+                if (this.model.hasTetromino()) {
+                    canMoveDown = this.model.moveTetrominoDown();
+                    if (!canMoveDown) {
+                        this.placeTetromino();
+                        freeFallIterations = 0;
                     } else {
-                        gameContinues = this.model.spawnTetromino();
+                        freeFallIterations += 1;
                     }
-                    this.updateView();
                 }
-                finally {
-                    movementLock.unlock();
+                else {
+                    gameContinues = this.model.spawnTetromino();
                 }
+                this.updateView();
                 cycleStartTime = System.currentTimeMillis();
+            }
+            else {
+                userActionHandler();
             }
         }
         view.gameOver();
@@ -70,7 +66,6 @@ public class TetrisEngine implements Runnable {
 
     private void updateView() {
         this.view.updateGrid(this.model.getGridWithTetromino());
-        view.updateScore(score);
     }
 
     private void dropTetromino() {
@@ -80,49 +75,51 @@ public class TetrisEngine implements Runnable {
 
     private void placeTetromino() {
         this.model.placeTetromino();
+        this.model.handleAllFilledRows();
+        this.updateView();
         this.updateScore();
+    }
+
+    private void moveTetrominoLeft() {
+        this.model.moveTetrominoLeft();
+        this.updateView();
+    }
+
+    private void moveTetrominoRight() {
+        this.model.moveTetrominoRight();
+        this.updateView();
+    }
+
+    private void rotateTetromino() {
+        this.model.rotateTetromino();
+        this.updateView();
     }
 
     private void updateScore() {
         this.score += ( (21 + 3*level) - freeFallIterations);
         freeFallIterations = 0;
+        this.view.updateScore(score);
     }
     /**
      * Simple action handler which receives user commands from view.
-     * @param command received string command from the view.
      */
-    public void userActionHandler(String command) {
-        boolean gotLock = movementLock.tryLock();
-        System.out.println("Got lock: " + gotLock);
-        if (gotLock) {
-            try {
-                if (this.model.hasTetromino()) {
-                    boolean actionPerformed = false;
-                    switch (command) {
-                        case "down":
-                            this.dropTetromino();
-                            this.model.handleAllFilledRows();
-                            break;
-                        case "left":
-                            actionPerformed = this.model.moveTetrominoLeft();
-                            break;
-                        case "right":
-                            actionPerformed = this.model.moveTetrominoRight();
-                            break;
-                        case "rotate":
-                            actionPerformed = this.model.rotateTetromino();
-                            break;
-                        default:
-                            return;
-                    }
-                    if (actionPerformed) {
-                        this.updateView();
-                    }
-                }
-            }
-            finally {
-                movementLock.unlock();
-            }
+    public void userActionHandler() {
+        String command = this.view.getLastCommand();
+        switch (command) {
+            case "drop":
+                this.dropTetromino();
+                break;
+            case "left":
+                this.moveTetrominoLeft();
+                break;
+            case "right":
+                this.moveTetrominoRight();
+                break;
+            case "rotate":
+                this.rotateTetromino();
+                break;
+            default:
+                break;
         }
     }
 }

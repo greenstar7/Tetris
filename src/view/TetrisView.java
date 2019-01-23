@@ -17,6 +17,7 @@ public class TetrisView extends JPanel {
     private int width;
     private int height;
     private boolean gameOver;
+    private volatile String lastCommand;
     private long score;
 
     public TetrisView(int width, int height, int gridWidth, int gridHeight) {
@@ -27,6 +28,7 @@ public class TetrisView extends JPanel {
         initTileSize();
         addKeyBindings();
         initView();
+        this.resetLastCommand();
     }
 
     private void initTileSize() {
@@ -110,27 +112,41 @@ public class TetrisView extends JPanel {
         this.repaint();
     }
 
+    private void setLastCommand(String command) {
+        this.lastCommand = command;
+    }
+
+    public String getLastCommand() {
+        String command = this.lastCommand;
+        this.resetLastCommand();
+        return command;
+    }
+
+    private void resetLastCommand() {
+        this.lastCommand = "none";
+    }
+
     private final Action sendDropAction = new AbstractAction() {
         public void actionPerformed(ActionEvent event) {
-            controller.userActionHandler("down");
+            setLastCommand("drop");
         }
     };
 
     private final Action sendLeftAction = new AbstractAction() {
         public void actionPerformed(ActionEvent event) {
-            controller.userActionHandler("left");
+            setLastCommand("left");
         }
     };
 
     private final Action sendRightAction = new AbstractAction() {
         public void actionPerformed(ActionEvent event) {
-            controller.userActionHandler("right");
+            setLastCommand("right");
         }
     };
 
     private final Action sendRotateAction = new AbstractAction() {
         public void actionPerformed(ActionEvent event) {
-            controller.userActionHandler("rotate");
+            setLastCommand("rotate");
         }
     };
 

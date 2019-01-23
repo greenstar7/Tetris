@@ -102,7 +102,7 @@ public abstract class Tetromino extends AbstractTetromino{
      * @return true if position is available for tetromino, false otherwise
      */
     public boolean isValidPos(Color[][] grid) {
-        if (y <0 || y > grid.length) {
+        if (y < 0 || y >= grid.length) {
             return false;
         }
         else if (x < 0 || x >= grid[0].length) {
