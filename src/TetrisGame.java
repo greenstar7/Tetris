@@ -22,11 +22,18 @@ public class TetrisGame implements  Runnable{
             initJFrame();
     }
 
+    /**
+     * Initialize model, view and controller.
+     */
     private void initMVC() {
         view = new TetrisView(width, height, TetrisGrid.STANDARD_WIDTH, TetrisGrid.STANDARD_HEIGHT);
         model = new TetrisGrid();
         controller = new TetrisEngine(model, view);
     }
+
+    /**
+     * Initialize game's window.
+     */
     private void initJFrame() {
         jFrame = new JFrame();
         jFrame.add(view);
@@ -35,12 +42,18 @@ public class TetrisGame implements  Runnable{
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Runs the game(view) and controller thread.
+     */
     public void run() {
         jFrame.setVisible(true);
         new Thread(controller).start();
     }
 
+    /**
+     * Main method just to run tetris game with invokeLater.
+     */
     public static void main(String[] argv) {
-        SwingUtilities.invokeLater(new TetrisGame(500, 600));
+        SwingUtilities.invokeLater(new TetrisGame(600, 600));
     }
 }
