@@ -40,7 +40,7 @@ public class TetrisView extends JPanel {
     }
 
     private void revisitDimensions() {
-        this.height = tileSize*gridHeight;
+        this.height = tileSize*(gridHeight-2);
         this.gameWidth = tileSize*gridWidth;
         this.width = gameWidth + sideWidth + 1;
     }
@@ -153,16 +153,18 @@ public class TetrisView extends JPanel {
      * @param g2d
      */
     private void drawGameGrid(Graphics2D g2d) {
-        for (int row = 0; row < gridHeight; row++) {
+        for (int row = 2; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
                 if (grid[row][col] != null) {
                     g2d.setPaint(grid[row][col]);
                 } else {
+//                    g2d.setPaint(new Color(128, 128, 128));
                     g2d.setPaint(Color.BLACK);
                 }
-                g2d.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
-                g2d.setPaint(Color.LIGHT_GRAY);
-                g2d.drawRect(col * tileSize, row * tileSize, tileSize, tileSize);
+                g2d.fillRect(col * tileSize, (row-2) * tileSize, tileSize, tileSize);
+                g2d.setPaint(Color.WHITE);
+//                g2d.setPaint(Color.BLACK);
+                g2d.drawRect(col * tileSize, (row-2) * tileSize, tileSize, tileSize);
             }
         }
     }

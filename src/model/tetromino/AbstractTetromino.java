@@ -22,6 +22,7 @@ public abstract class AbstractTetromino {
     abstract boolean moveLeft(Color[][] grid);
     abstract boolean moveRight(Color[][] grid);
     abstract boolean moveDown(Color[][] grid);
+    abstract void dropSelf(Color[][] grid);
     abstract void placeSelf(Color[][] grid);
     abstract Color[][] asArray();
 }

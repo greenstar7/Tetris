@@ -54,6 +54,6 @@ public class TetrisGame implements  Runnable{
      * Main method just to run tetris game with invokeLater.
      */
     public static void main(String[] argv) {
-        SwingUtilities.invokeLater(new TetrisGame(600, 600));
+        SwingUtilities.invokeLater(new TetrisGame(400, 600));
     }
 }

@@ -11,6 +11,7 @@ public class TetrominoFactory {
     private Random rand;
     private int startX;
     private int startY;
+    private int last;
     private static final Color[] tetrominoColors;
 
     static {
@@ -28,7 +29,7 @@ public class TetrominoFactory {
     public TetrominoFactory(int width) {
         this.rand = new Random();
         this.startX = (int) Math.ceil(width/2.0);
-        this.startY = 0;
+        this.startY = 2;
     }
 
     /**
@@ -36,22 +37,45 @@ public class TetrominoFactory {
      * @return new randomly selected Tetromino object
      */
     public Tetromino getNextTetromino() {
-        int i = this.rand.nextInt(7);
-        switch (i) {
+        this.last = this.rand.nextInt(7);
+        switch (this.last) {
             case 0:
-                return new O(startX, startY, tetrominoColors[i]);
+                return new O(startX, startY, tetrominoColors[this.last]);
             case 1:
-                return new I(startX, startY, tetrominoColors[i]);
+                return new I(startX, startY, tetrominoColors[this.last]);
             case 2:
-                return new S(startX, startY, tetrominoColors[i]);
+                return new S(startX, startY, tetrominoColors[this.last]);
             case 3:
-                return new Z(startX, startY, tetrominoColors[i]);
+                return new Z(startX, startY, tetrominoColors[this.last]);
             case 4:
-                return new L(startX, startY, tetrominoColors[i]);
+                return new L(startX, startY, tetrominoColors[this.last]);
             case 5:
-                return new J(startX, startY, tetrominoColors[i]);
+                return new J(startX, startY, tetrominoColors[this.last]);
             case 6:
-                return new T(startX, startY, tetrominoColors[i]);
+                return new T(startX, startY, tetrominoColors[this.last]);
+            default: return null;
+        }
+    }
+
+    /**
+     * Method to get the clone of the last tetromino
+     */
+    public Tetromino getLastClone() {
+        switch (this.last) {
+            case 0:
+                return new O(startX, startY, tetrominoColors[this.last]);
+            case 1:
+                return new I(startX, startY, tetrominoColors[this.last]);
+            case 2:
+                return new S(startX, startY, tetrominoColors[this.last]);
+            case 3:
+                return new Z(startX, startY, tetrominoColors[this.last]);
+            case 4:
+                return new L(startX, startY, tetrominoColors[this.last]);
+            case 5:
+                return new J(startX, startY, tetrominoColors[this.last]);
+            case 6:
+                return new T(startX, startY, tetrominoColors[this.last]);
             default: return null;
         }
     }

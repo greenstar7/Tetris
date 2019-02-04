@@ -110,10 +110,38 @@ public abstract class Tetromino extends AbstractTetromino{
      */
     @Override
     public void placeSelf(Color[][] grid) {
-        grid[y][x] = color;
+        grid[y][x] = this.color;
         for (Point point: points) {
-            grid[y+(int)point.getY()][x+(int)point.getX()] = color;
+            grid[y+(int)point.getY()][x+(int)point.getX()] = this.color;
         }
+    }
+
+    /**
+     * Method to place tetromino's ghost on given grid
+     * @param grid Tetris game grid
+     */
+    public void placeGhost(Color[][] grid) {
+        int thisX = this.x;
+        int thisY = this.y;
+        Color thisColor = this.color;
+        this.color = Color.GRAY;
+        dropSelf(grid);
+        placeSelf(grid);
+        this.color = thisColor;
+        this.x = thisX;
+        this.y = thisY;
+    }
+
+    /**
+     * Method to drop tetromino
+     * @param grid - Tetris game grid
+     */
+    public void dropSelf(Color[][] grid) {
+        boolean movedDown;
+        do {
+            movedDown = this.moveDown(grid);
+        } while (movedDown);
+        this.placeSelf(grid);
     }
 
     /**

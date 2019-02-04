@@ -12,13 +12,14 @@ import java.awt.*;
  */
 public class TetrisGrid {
     public static final int STANDARD_WIDTH= 10;
-    public static final int STANDARD_HEIGHT= 20;
+    public static final int STANDARD_HEIGHT= 22;
     private int width;
     private int height;
     private Color[][] grid;
     private TetrominoFactory tetrominoFactory;
     private Tetromino tetromino;
     private Tetromino nextTetromino;
+
     /**
      * Tetris grid constructor.
      * <p> Initializes size of the grid and fills Color grid with nulls.
@@ -53,6 +54,7 @@ public class TetrisGrid {
             }
         }
         if (hasTetromino()){
+            this.tetromino.placeGhost(gridWithTetromino);
             this.tetromino.placeSelf(gridWithTetromino);
         }
         return gridWithTetromino;
@@ -137,11 +139,7 @@ public class TetrisGrid {
      */
     public boolean dropTetromino() {
         if (hasTetromino()) {
-            boolean movedDown;
-            do {
-                movedDown = this.moveTetrominoDown();
-            } while (movedDown);
-            this.placeTetromino();
+            this.tetromino.dropSelf(this.grid);
             return true;
         }
         else {
